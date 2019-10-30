@@ -32,22 +32,42 @@ public class Interval {
     metoda (prima jedan interval) i kao statička metoda (prima dva intervala);*/
     public Interval intersect(Interval interval) {
         Interval presjekDvaIntervala = new Interval();
-        if (interval.getPocetnaTacka() >= pocetnaTacka) presjekDvaIntervala.pocetnaTacka = interval.getPocetnaTacka();
-        else presjekDvaIntervala.krajnjaTacka = pocetnaTacka;
-        if (interval.getKrajnjaTacka() >= krajnjaTacka) presjekDvaIntervala.krajnjaTacka = interval.getKrajnjaTacka();
-        else presjekDvaIntervala.krajnjaTacka = krajnjaTacka;
-        presjekDvaIntervala.daLiPocetnaTackaPripadaIntervalu = true;
-        presjekDvaIntervala.daLiKrajnjaTackaPripadaIntervalu = true;
+        if (interval.getPocetnaTacka() >= pocetnaTacka){
+            presjekDvaIntervala.pocetnaTacka = interval.getPocetnaTacka();
+            presjekDvaIntervala.daLiPocetnaTackaPripadaIntervalu = interval.getDaLiPocetnaTackaPripadaIntervalu();
+        }
+        else{
+            presjekDvaIntervala.krajnjaTacka = pocetnaTacka;
+            presjekDvaIntervala.daLiPocetnaTackaPripadaIntervalu = daLiPocetnaTackaPripadaIntervalu;
+        }
+        if (interval.getKrajnjaTacka() <= krajnjaTacka) {
+            presjekDvaIntervala.krajnjaTacka = interval.getKrajnjaTacka();
+            presjekDvaIntervala.daLiKrajnjaTackaPripadaIntervalu = interval.daLiKrajnjaTackaPripadaIntervalu;
+        }
+        else {
+            presjekDvaIntervala.krajnjaTacka = krajnjaTacka;
+            presjekDvaIntervala.daLiKrajnjaTackaPripadaIntervalu = daLiKrajnjaTackaPripadaIntervalu;
+        }
        return presjekDvaIntervala;
     }
     public static Interval intersect(Interval interval1, Interval interval2) {
         Interval presjekDvaIntervala = new Interval();
-        if (interval1.getPocetnaTacka() >= interval2.getPocetnaTacka()) presjekDvaIntervala.pocetnaTacka = interval1.getPocetnaTacka();
-        else presjekDvaIntervala.krajnjaTacka = interval2.getPocetnaTacka();
-        if (interval1.getKrajnjaTacka() >= interval2.getKrajnjaTacka()) presjekDvaIntervala.krajnjaTacka = interval1.getKrajnjaTacka();
-        else presjekDvaIntervala.krajnjaTacka = interval2.getKrajnjaTacka();
-        presjekDvaIntervala.daLiPocetnaTackaPripadaIntervalu = true;
-        presjekDvaIntervala.daLiKrajnjaTackaPripadaIntervalu = true;
+        if (interval1.getPocetnaTacka() >= interval2.getPocetnaTacka()) {
+            presjekDvaIntervala.pocetnaTacka = interval1.getPocetnaTacka();
+            presjekDvaIntervala.daLiPocetnaTackaPripadaIntervalu = interval1.getDaLiPocetnaTackaPripadaIntervalu();
+        }
+        else{
+            presjekDvaIntervala.krajnjaTacka = interval2.getPocetnaTacka();
+            presjekDvaIntervala.daLiPocetnaTackaPripadaIntervalu = interval2.getDaLiPocetnaTackaPripadaIntervalu();
+        }
+        if (interval1.getKrajnjaTacka() <= interval2.getKrajnjaTacka()) {
+            presjekDvaIntervala.krajnjaTacka = interval1.getKrajnjaTacka();
+            presjekDvaIntervala.daLiKrajnjaTackaPripadaIntervalu = interval1.daLiKrajnjaTackaPripadaIntervalu;
+        }
+        else {
+            presjekDvaIntervala.krajnjaTacka = interval2.getKrajnjaTacka();
+            presjekDvaIntervala.daLiKrajnjaTackaPripadaIntervalu = interval2.getDaLiKrajnjaTackaPripadaIntervalu();
+        }
         return presjekDvaIntervala;
     }
     private double getPocetnaTacka(){
@@ -62,7 +82,17 @@ public class Interval {
     private boolean getDaLiKrajnjaTackaPripadaIntervalu(){
         return daLiKrajnjaTackaPripadaIntervalu;
     }
-
+    @Override
+    public String toString() {
+        String s = null;
+        if (this.isNull()) return "()";
+        if (this.daLiPocetnaTackaPripadaIntervalu == true) s ="[";
+        else s = s + "(";
+        s = s + new Double(this.pocetnaTacka).toString() + "," +  new Double(this.krajnjaTacka).toString(); //prvo moras od double klasu napravit, pa primjenit funkciju
+        if (this.daLiKrajnjaTackaPripadaIntervalu == true) s = s + "]";
+        else s = s + ")";
+        return s;
+    }
 }
 
 
